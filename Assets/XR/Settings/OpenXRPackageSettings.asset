@@ -979,20 +979,8 @@ MonoBehaviour:
   m_Name: Android
   m_EditorClassIdentifier: 
   features:
-  - {fileID: -7349926892915294884}
-  - {fileID: 5345970827837662513}
-  - {fileID: -486610063187181685}
-  - {fileID: -713663211255730154}
-  - {fileID: -7709333930402017}
-  - {fileID: 691451973830006101}
-  - {fileID: -2912977316059515168}
-  - {fileID: -1591902884623543788}
-  - {fileID: -655174949164459854}
-  - {fileID: -8955961822601115}
-  - {fileID: -8508162875457796592}
   - {fileID: -3006765573944556484}
-  - {fileID: -1522513321662784394}
-  - {fileID: 1892413563400147667}
+  - {fileID: -7349926892915294884}
   - {fileID: -2402630214408262169}
   - {fileID: -6121271877732613880}
   - {fileID: -8000997598222710656}
@@ -1004,6 +992,7 @@ MonoBehaviour:
   - {fileID: 2084572350563878152}
   - {fileID: 3451029652778698079}
   - {fileID: -3873002391498935951}
+  - {fileID: 5345970827837662513}
   - {fileID: 6886245988355559344}
   - {fileID: 6746228182035495572}
   - {fileID: 8877639857907081683}
@@ -1015,6 +1004,17 @@ MonoBehaviour:
   - {fileID: 5002981905155096068}
   - {fileID: 1545823429219164807}
   - {fileID: 6413359822837567670}
+  - {fileID: 691451973830006101}
+  - {fileID: -713663211255730154}
+  - {fileID: -655174949164459854}
+  - {fileID: -1591902884623543788}
+  - {fileID: -8955961822601115}
+  - {fileID: 1892413563400147667}
+  - {fileID: -486610063187181685}
+  - {fileID: -7709333930402017}
+  - {fileID: -2912977316059515168}
+  - {fileID: -1522513321662784394}
+  - {fileID: -8508162875457796592}
   - {fileID: 3626661149932184404}
   - {fileID: -824515338572727054}
   - {fileID: 7547060763672968591}
@@ -1192,6 +1192,7 @@ MonoBehaviour:
   m_Name: Metro
   m_EditorClassIdentifier: 
   features:
+  - {fileID: 7477939515863973016}
   - {fileID: -5028649028944853713}
   - {fileID: 8268103913060193225}
   - {fileID: 3402497904826283929}
@@ -1436,19 +1437,8 @@ MonoBehaviour:
   m_Name: Standalone
   m_EditorClassIdentifier: 
   features:
-  - {fileID: -7654818744374354004}
-  - {fileID: 7205030633442383699}
-  - {fileID: -1434226875943855070}
-  - {fileID: -4375116765689637372}
-  - {fileID: 3650312001758647354}
-  - {fileID: 5731892192383570039}
-  - {fileID: 3654367343735499857}
-  - {fileID: 720247807183803948}
-  - {fileID: 5896974701355463113}
-  - {fileID: 7769247350964520063}
   - {fileID: -6908374536580438610}
-  - {fileID: 7524186041058922918}
-  - {fileID: 6813193365923959304}
+  - {fileID: -7654818744374354004}
   - {fileID: 4634134690582946360}
   - {fileID: 6710409733205913234}
   - {fileID: -4367189000649784596}
@@ -1461,6 +1451,17 @@ MonoBehaviour:
   - {fileID: -2381477133030584647}
   - {fileID: 1070505300935040877}
   - {fileID: -5019045562822750365}
+  - {fileID: 3650312001758647354}
+  - {fileID: -1434226875943855070}
+  - {fileID: 720247807183803948}
+  - {fileID: 3654367343735499857}
+  - {fileID: 5896974701355463113}
+  - {fileID: 6813193365923959304}
+  - {fileID: 7205030633442383699}
+  - {fileID: -4375116765689637372}
+  - {fileID: 5731892192383570039}
+  - {fileID: 7524186041058922918}
+  - {fileID: 7769247350964520063}
   - {fileID: -2097352140344030225}
   - {fileID: 6419547786293247993}
   - {fileID: 8902865461886854443}
@@ -2113,11 +2114,13 @@ MonoBehaviour:
   m_Name: OpenXRCompositionLayersFeature Metro
   m_EditorClassIdentifier: 
   m_enabled: 0
-  nameUi: 
-  version: 
-  featureIdInternal: 
-  openxrExtensionStrings: 
-  company: 
+  nameUi: Composition Layers Support
+  version: 1.0.0
+  featureIdInternal: com.unity.openxr.feature.compositionlayers
+  openxrExtensionStrings: XR_KHR_composition_layer_cylinder XR_KHR_composition_layer_equirect
+    XR_KHR_composition_layer_equirect2 XR_KHR_composition_layer_cube XR_KHR_composition_layer_color_scale_bias
+    XR_KHR_android_surface_swapchain
+  company: Unity
   priority: 0
   required: 0
 --- !u!114 &7524186041058922918
