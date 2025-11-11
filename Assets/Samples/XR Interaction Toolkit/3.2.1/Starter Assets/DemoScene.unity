@@ -4646,7 +4646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
   groundCheckDistance: 0.2
   isGrounded: 0
   isClimbing: 0
