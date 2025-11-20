@@ -2261,11 +2261,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1565887663814566041, guid: 3e07eccb5e6f459d886de95044adb1d9, type: 3}
   m_PrefabInstance: {fileID: 208985960}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &212600834 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1381003933199010277, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-  m_PrefabInstance: {fileID: 3553664170849322038}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &231621313
 GameObject:
   m_ObjectHideFlags: 0
@@ -12198,37 +12193,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 574384174}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1560266543
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1560266544}
-  m_Layer: 2
-  m_Name: CharacterController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1560266544
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1560266543}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 212600834}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1568429635
 GameObject:
   m_ObjectHideFlags: 0
@@ -16426,33 +16390,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: XR Origin (XR Rig)
       objectReference: {fileID: 0}
-    - target: {fileID: 2526287845750522969, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_GripTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2526287845750522969, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_TriggerTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2526287845750522969, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_ThumbstickTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3146841927490639752, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_GripTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3146841927490639752, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_TriggerTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3146841927490639752, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_ThumbstickTransform
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 3241574069152231063, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_Enabled
-      value: 1
+      propertyPath: fadePanel
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3241574069152231063, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
       propertyPath: climbProvider
@@ -16466,26 +16406,9 @@ PrefabInstance:
       propertyPath: fallHeightThreshold
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3268111336878469923, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6360532103315540115, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8552696586705308214, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      propertyPath: m_TargetGraphic
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 1736756001467012966, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-    - {fileID: 2284007734712786935, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 1381003933199010277, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1560266544}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
 --- !u!114 &3553664170849322039 stripped

@@ -491,13 +491,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2016382151439083718}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.125, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 580968627789795168}
   - {fileID: 339817730288236449}
+  - {fileID: 2596377809545355995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &7026971395668620654
@@ -626,14 +627,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 128
   groundCheckDistance: 0.2
   isGrounded: 0
-  isClimbing: 0
   stamina: 100
+  maxStamina: 100
   staminaDrainRate: 10
-  fallHeightThreshold: 3
-  hearts: 3
+  climbProvider: {fileID: 5185743338791665066}
+  fallHeightThreshold: 1
+  maxHearts: 3
+  currentHearts: 3
+  fadePanel: {fileID: 0}
+  fadeDuration: 1.5
+  isDead: 0
+  staminaRegenRate: 15
+  lowStaminaThreshold: 20
+  vibrationIntensity: 0.3
+  vibrationDuration: 0.1
   staminaSlider: {fileID: 8552696586705308214}
   heartLeft: {fileID: 7247792539097549567}
   heartMiddle: {fileID: 1974722297998289893}
@@ -1193,6 +1203,37 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!1 &4249054036970134271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2596377809545355995}
+  m_Layer: 2
+  m_Name: CharacterController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2596377809545355995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4249054036970134271}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1381003933199010277}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4351543396312167217
 GameObject:
   m_ObjectHideFlags: 0
@@ -3082,7 +3123,9 @@ PrefabInstance:
       value: clock
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 65702495048144492, guid: 6c9c5bc5f98354e4688e4166424e41eb, type: 3}
+    - {fileID: -8700617353114198275, guid: 6c9c5bc5f98354e4688e4166424e41eb, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c9c5bc5f98354e4688e4166424e41eb, type: 3}

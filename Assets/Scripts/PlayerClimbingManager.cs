@@ -6,6 +6,8 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using System.Collections.Generic;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.SceneManagement;
+using UnityEditor.Rendering.LookDev;
 
 
 
@@ -29,7 +31,13 @@ public class PlayerClimbingManager : MonoBehaviour
     [Header("Fall Damage")]
     public float fallHeightThreshold = 3.0f;
     private float highestPoint;
-    public int hearts = 3;
+    public int maxHearts = 3;
+    public int currentHearts = 3;
+
+    [Header("Fade Panel")]
+    
+    public float fadeDuration = 1.5f;
+    public bool isDead = false;
 
     [Header("Stamina Regeneration")]
     public float staminaRegenRate = 15f; // per second
@@ -123,29 +131,48 @@ public class PlayerClimbingManager : MonoBehaviour
 
             if (fallDistance > fallHeightThreshold)
             {
-                if(hearts == 3)
+                if(currentHearts == 3)
                 {
-                    hearts = Mathf.Max(hearts - 1, 0);
+                    currentHearts = Mathf.Max(currentHearts - 1, 0);
                     heartLeft.gameObject.SetActive(false);
-                    Debug.Log("Fall damage! Hearts left: " + hearts);
+                    Debug.Log("Fall damage! Hearts left: " + currentHearts);
                 }
-                else if(hearts == 2)
+                else if(currentHearts == 2)
                 {
-                    hearts = Mathf.Max(hearts - 1, 0);
+                    currentHearts = Mathf.Max(currentHearts - 1, 0);
                     heartMiddle.gameObject.SetActive(false);
-                    Debug.Log("Fall damage! Hearts left: " + hearts);
+                    Debug.Log("Fall damage! Hearts left: " + currentHearts);
                 }
                 else
                 {
-                    hearts = Mathf.Max(hearts - 1, 0);
+                    currentHearts = Mathf.Max(currentHearts - 1, 0);
                     heartRight.gameObject.SetActive(false);
-                    Debug.Log("Fall damage! Hearts left: " + hearts);
+                    Debug.Log("Fall damage! Hearts left: " + currentHearts);
+                    StartCoroutine(DeathSequence());
                 }
                 
             }
 
             highestPoint = transform.position.y;
         }
+    }
+    private System.Collections.IEnumerator DeathSequence()
+    {
+        isDead = true;
+
+        // Fade out
+        float t = 0;
+        
+
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+           
+            yield return null;
+        }
+
+        // Reload scene (or load any other)
+        SceneManager.LoadScene("DeathScene");
     }
 
     // Call this from your climbing grab script:
