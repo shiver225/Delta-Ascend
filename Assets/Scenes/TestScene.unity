@@ -16139,9 +16139,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   socket: {fileID: 3553664170849322042}
-  displayPrefab: {fileID: 898064655171428287, guid: 72717205e41205d41833932476d27cce, type: 3}
-  livePrefab: {fileID: 898064655171428287, guid: ab73a60932533804c843f56547cd1d9d, type: 3}
-  interactionManager: {fileID: 3127728407676174906}
+  carabinerPrefab: {fileID: 898064655171428287, guid: ab73a60932533804c843f56547cd1d9d, type: 3}
+  respawnDelay: 0.5
+  maxCarabiners: 5
+  unlimitedSpawns: 0
+  returnDistance: 0.2
 --- !u!114 &3807310294900035020
 MonoBehaviour:
   m_ObjectHideFlags: 0
