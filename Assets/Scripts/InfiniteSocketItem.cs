@@ -1,76 +1,83 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public sealed class InfiniteSocketItem : MonoBehaviour
 {
-    [Header("Scene references")]
-    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor socket;
-    [SerializeField] GameObject displayPrefab;   // mesh-only version for the socket
-    [SerializeField] GameObject livePrefab;      // grab-enabled prefab handed to the player
-    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable displayProxy;
-    [SerializeField] XRInteractionManager interactionManager;
-
-    UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable displayInteractable;
+    [Header("Setup")]
+    [SerializeField] XRSocketInteractor socket;              // The socket that holds the carabiner
+    [SerializeField] GameObject carabinerPrefab;           // The real grabbable carabiner prefab
+    [SerializeField] float respawnDelay = 0.5f;           // Delay before spawning new carabiner (prevents spam)
+    
+    private GameObject currentCarabiner;                   // The carabiner currently in the socket
+    private bool isRespawning = false;                     // Prevent multiple respawns at once
 
     void Awake()
     {
-        if (!socket) socket = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor>();
-        if (!interactionManager) interactionManager = FindObjectOfType<XRInteractionManager>();
+        // Auto-find socket if not assigned
+        if (!socket) socket = GetComponent<XRSocketInteractor>();
     }
 
-    void OnEnable()
+    void Start()
     {
-        SpawnOrResetDisplay();
-        displayInteractable.selectEntered.AddListener(HandlePlayerPullsItem);
+        // Spawn initial carabiner in socket
+        SpawnCarabinerInSocket();
+        
+        // Listen for when carabiner is grabbed/taken out
+        if (socket != null)
+        {
+            socket.selectExited.AddListener(OnCarabinerTaken);
+        }
     }
 
     void OnDisable()
     {
-        socket.selectEntered.RemoveListener(HandlePlayerPullsItem);
+        // Clean up event listener
+        if (socket != null)
+        {
+            socket.selectExited.RemoveListener(OnCarabinerTaken);
+        }
     }
 
-    void SpawnOrResetDisplay()
+    void OnCarabinerTaken(SelectExitEventArgs args)
     {
-        // if (displayInteractable == null)
-        // {
-        //     var displayObj = Instantiate(displayPrefab, socket.attachTransform);
-        //     if (displayObj.TryGetComponent(out UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grab)) grab.enabled = false;
-        //     displayInteractable = displayObj.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable>();
-        // }
-
-        // // Make sure the socket thinks it is holding the display object
-        // socket.StartManualInteraction(displayInteractable);
-
-        if (displayInteractable != null) return;
-
-        var displayObj = Instantiate(displayPrefab, socket.attachTransform);
-        displayInteractable = displayObj.GetComponentInChildren<UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable>();
-
-        if (!displayProxy)
-            displayProxy = displayObj.GetComponentInChildren<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+        // When carabiner is grabbed from socket, spawn a new one after delay
+        if (!isRespawning)
+        {
+            StartCoroutine(RespawnCarabinerDelayed());
+        }
     }
 
-    void HandlePlayerPullsItem(SelectEnterEventArgs args)
+    IEnumerator RespawnCarabinerDelayed()
     {
-        // var liveObj = Instantiate(livePrefab, socket.attachTransform.position, socket.attachTransform.rotation);
-        // var liveInteractable = liveObj.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable>();
+        isRespawning = true;
+        
+        // Wait for the delay
+        yield return new WaitForSeconds(respawnDelay);
+        
+        // Spawn new carabiner in socket
+        SpawnCarabinerInSocket();
+        
+        isRespawning = false;
+    }
 
-        // // Hand the live object to the player’s interactor (controller)
-        // interactionManager.SelectEnter(args.interactorObject, liveInteractable);
-
-        // // Immediately reassign the display back to the socket so it looks like it never left
-        // interactionManager.SelectEnter(socket, displayInteractable);
-
-        var liveObj = Instantiate(livePrefab,
-            socket.attachTransform.position,
-            socket.attachTransform.rotation);
-
-        var liveInteractable = liveObj.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable>();
-
-        // Give the spawned copy to the player’s interactor (their hand/controller)
-        interactionManager.SelectEnter(args.interactorObject, liveInteractable);
-
-        // Force the proxy to release so it can be triggered again immediately
-        interactionManager.SelectExit(args.interactorObject, displayProxy);
+    void SpawnCarabinerInSocket()
+    {
+        if (socket == null || carabinerPrefab == null) return;
+        
+        // Spawn the carabiner at the socket's attach point
+        GameObject newCarabiner = Instantiate(carabinerPrefab, socket.attachTransform.position, socket.attachTransform.rotation);
+        
+        // Get the interactable component
+        IXRSelectInteractable interactable = newCarabiner.GetComponent<IXRSelectInteractable>();
+        
+        if (interactable != null && socket != null)
+        {
+            // Put it directly into the socket using manual interaction
+            socket.StartManualInteraction(interactable);
+            currentCarabiner = newCarabiner;
+        }
     }
 }
