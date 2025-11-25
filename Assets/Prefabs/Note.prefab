@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 4339183388208642957}
   - component: {fileID: 8541575964483467045}
   - component: {fileID: 2502768572027954888}
-  - component: {fileID: 3656114640326331785}
+  - component: {fileID: 1741432311366887391}
   m_Layer: 0
   m_Name: Note
   m_TagString: Untagged
@@ -406,29 +406,29 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
---- !u!114 &3656114640326331785
+--- !u!114 &1741432311366887391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203127451176368875}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0a1302d0d134fa8a2a5b3bf4aec3c20, type: 3}
+  m_Script: {fileID: 11500000, guid: 226381f560284814382b687a8c9e3e1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PermittedDisplacementAxes: -1
-  m_ConstrainedAxisDisplacementMode: 1
-  m_TwoHandedRotationMode: 1
-  m_AllowOneHandedScaling: 1
-  m_AllowTwoHandedScaling: 1
-  m_OneHandedScaleSpeed: 0.5
-  m_ThresholdMoveRatioForScale: 0.05
-  m_ClampScaling: 1
-  m_MinimumScaleRatio: 0.25
-  m_MaximumScaleRatio: 2
-  m_ScaleMultiplier: 0.25
+  noteTextCanvas: {fileID: 5027981996362266124}
+  textSelection: {fileID: 292012702430115991}
+  textDisplay: {fileID: 6752396514469865382}
+  noteText: {fileID: 1459273848236238854}
+  textButtons:
+  - {fileID: 720516638011154093}
+  - {fileID: 906817100734708318}
+  - {fileID: 5802604101714381600}
+  - {fileID: 8783686040461803099}
+  showDistance: 0.4
+  playerCamera: {fileID: 0}
 --- !u!1 &292012702430115991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1710,7 +1710,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6752396514469865382}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 49.9}
+  m_LocalPosition: {x: 0, y: 0, z: 49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
