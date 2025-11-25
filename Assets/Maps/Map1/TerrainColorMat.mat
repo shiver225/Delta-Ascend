@@ -51,8 +51,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Ambient_Occlusion: 1
+    - _Metalic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Smoothness: 0
     - _edge: 0.721
     m_Colors:
     - _ColorFlat: {r: 0.69411767, g: 0.6572557, b: 0.2, a: 1}
