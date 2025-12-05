@@ -52,18 +52,45 @@ public class RopeManager : MonoBehaviour
     /// <summary>
     /// Call this when a carabiner is placed/attached to a surface
     /// </summary>
+    // public void OnCarabinerPlaced(Transform carabinerTransform)
+    // {
+    //     // Find the clipping point on the carabiner
+    //     Transform clippingPoint = carabinerTransform.Find("RopePoint");
+    //     if (clippingPoint == null)
+    //     {
+    //         Debug.LogError($"Carabiner '{carabinerTransform.name}' doesn't have a 'RopePoint' child!");
+    //         return;
+    //     }
+        
+    //     // Add to the front of the list (newest first)
+    //     placedCarabiners.Insert(0, clippingPoint);
+        
+    //     // Update rope connections
+    //     UpdateRopeConnections();
+    // }
     public void OnCarabinerPlaced(Transform carabinerTransform)
     {
+        Debug.Log($"[RopeManager] OnCarabinerPlaced called for: {carabinerTransform.name}");
+        
         // Find the clipping point on the carabiner
         Transform clippingPoint = carabinerTransform.Find("RopePoint");
         if (clippingPoint == null)
         {
             Debug.LogError($"Carabiner '{carabinerTransform.name}' doesn't have a 'RopePoint' child!");
+            Debug.LogError($"Children of {carabinerTransform.name}: ");
+            foreach (Transform child in carabinerTransform)
+            {
+                Debug.LogError($"  - {child.name}");
+            }
             return;
         }
         
+        Debug.Log($"[RopeManager] Found RopePoint on {carabinerTransform.name}");
+        
         // Add to the front of the list (newest first)
         placedCarabiners.Insert(0, clippingPoint);
+        
+        Debug.Log($"[RopeManager] Total carabiners placed: {placedCarabiners.Count}");
         
         // Update rope connections
         UpdateRopeConnections();
@@ -90,11 +117,15 @@ public class RopeManager : MonoBehaviour
     /// </summary>
     void UpdateRopeConnections()
     {
+        Debug.Log($"[RopeManager] UpdateRopeConnections called. Carabiners: {placedCarabiners.Count}");
+
         if (ropeComponent == null)
         {
             Debug.LogError("RopeComponent is null!");
             return;
         }
+        
+        Debug.Log($"[RopeManager] ropeComponent is valid");
         
         // If no carabiners placed, disable the rope GameObject
         if (placedCarabiners.Count == 0)
@@ -104,13 +135,21 @@ public class RopeManager : MonoBehaviour
             return;
         }
         
+        Debug.Log($"[RopeManager] We have {placedCarabiners.Count} carabiner(s)");
+        
         // Make sure rope is active when we have carabiners
         if (ropeObject != null && !ropeObject.activeSelf)
+        {
             ropeObject.SetActive(true);
+            Debug.Log($"[RopeManager] Activated rope object");
+        }
+        
+        Debug.Log($"[RopeManager] ropeDisconnectedFromPlayer = {ropeDisconnectedFromPlayer}");
         
         // If rope is disconnected from player, start from first carabiner
         if (ropeDisconnectedFromPlayer)
         {
+            Debug.Log($"[RopeManager] Disconnected mode branch");
             if (placedCarabiners.Count == 1)
             {
                 // Only one carabiner - hide rope
@@ -126,6 +165,8 @@ public class RopeManager : MonoBehaviour
         }
         else
         {
+            Debug.Log($"[RopeManager] Normal mode branch - checking playerClippingPoint");
+            
             // Normal mode: player -> newest carabiner -> ... -> oldest carabiner
             if (playerClippingPoint == null)
             {
@@ -133,12 +174,16 @@ public class RopeManager : MonoBehaviour
                 return;
             }
             
+            Debug.Log($"[RopeManager] playerClippingPoint is valid: {playerClippingPoint.name}");
+            
             // Start point is always the player
+            Debug.Log($"[RopeManager] Setting start point to: {playerClippingPoint.name}");
             ropeComponent.SetStartPoint(playerClippingPoint, true);
-            
-            // End point is the oldest (last placed) carabiner
+
+            // End point is the oldest (last placed) carabiner  
+            Debug.Log($"[RopeManager] Setting end point to: {placedCarabiners[placedCarabiners.Count - 1].name}");
             ropeComponent.SetEndPoint(placedCarabiners[placedCarabiners.Count - 1], true);
-            
+
             Debug.Log($"Rope connected: Player -> {placedCarabiners.Count} carabiner(s)");
         }
     }
