@@ -1,87 +1,109 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
-using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using UnityEngine.XR;
 
-/// <summary>
-/// Add this to the player's clipping point to allow manual rope disconnection
-/// </summary>
 public class PlayerClippingPoint : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private RopeManager ropeManager;
-    
+
     [Header("Settings")]
-    [SerializeField] private bool allowReconnection = false;  // Can player reconnect the rope?
-    
-    private XRSimpleInteractable interactable;
-    private bool isDisconnected = false;
-    
+    [SerializeField] private bool allowReconnection = true;
+    [SerializeField] private bool startConnected = true;
+    [SerializeField] private float buttonCooldown = 0.35f;   // debounce for X button
+    [SerializeField] private float maxReconnectDistance = 10f; // match rope length
+
+    [Header("Haptics")]
+    [SerializeField] private bool enableHaptics = true;
+    [SerializeField] private float hapticIntensity = 0.6f;
+    [SerializeField] private float hapticDuration = 0.1f;
+
+    [Header("Debug")]
+    [SerializeField] private bool showDebugLogs = true;
+
+    private bool isConnected = true;
+    private float lastPressTime = 0f;
+
     void Start()
     {
-        // Get the interactable component
-        interactable = GetComponent<XRSimpleInteractable>();
-        
-        if (interactable == null)
-        {
-            Debug.LogError("PlayerClippingPoint: XRSimpleInteractable component not found!");
-            return;
-        }
-        
-        // Listen for when player interacts with this point
-        interactable.selectEntered.AddListener(OnInteracted);
-        
-        // Find RopeManager if not assigned
+        if (ropeManager == null) ropeManager = FindObjectOfType<RopeManager>();
         if (ropeManager == null)
         {
-            ropeManager = FindObjectOfType<RopeManager>();
-            if (ropeManager == null)
+            Debug.LogError("[ClippingPoint] RopeManager not found!");
+            enabled = false;
+            return;
+        }
+
+        isConnected = startConnected;
+        ropeManager.SetPlayerConnectedState(isConnected);
+
+        if (showDebugLogs)
+            Debug.Log($"[ClippingPoint] Ready. Rope {(isConnected ? "CONNECTED" : "DISCONNECTED")}");
+    }
+
+    void Update()
+    {
+        var leftHand = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+        if (!leftHand.isValid) return;
+
+        // X button on left controller is CommonUsages.primaryButton
+        if (leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool pressed) && pressed)
+        {
+            if (Time.time - lastPressTime > buttonCooldown)
             {
-                Debug.LogError("PlayerClippingPoint: RopeManager not found!");
+                HandleToggle(leftHand);
+                lastPressTime = Time.time;
             }
         }
     }
-    
-    void OnInteracted(SelectEnterEventArgs args)
+
+    void HandleToggle(InputDevice device)
     {
         if (ropeManager == null) return;
-        
-        // Toggle connection/disconnection
-        if (!isDisconnected)
+
+        // If no rope exists at all, ignore button
+        if (!ropeManager.HasActiveCarabiners() && isConnected)
         {
-            // Disconnect the rope from player
+            if (showDebugLogs) Debug.Log("[ClippingPoint] No rope present; ignoring toggle.");
+            return;
+        }
+
+        if (isConnected)
+        {
+            // Disconnect (but keep current chain intact)
             ropeManager.DisconnectRopeFromPlayer();
-            isDisconnected = true;
-            Debug.Log("Rope disconnected from player!");
-            
-            // Optional: Play sound or haptic feedback here
-            //PlayHapticFeedback(args.interactorObject);
+            isConnected = false;
+            if (showDebugLogs) Debug.LogWarning("[ClippingPoint] ROPE DISCONNECTED");
+            SendHaptics(device, hapticIntensity, hapticDuration);
         }
         else if (allowReconnection)
         {
-            // Reconnect the rope to player
+            // If there is an active chain and we’re too far, block reconnect
+            if (ropeManager.HasActiveCarabiners() && !ropeManager.WithinActiveChainRange(maxReconnectDistance))
+            {
+                if (showDebugLogs) Debug.LogWarning("[ClippingPoint] Too far to reconnect. Move closer (< rope length).");
+                return;
+            }
+
+            // Reconnect to the current active chain
             ropeManager.ReconnectRopeToPlayer();
-            isDisconnected = false;
-            Debug.Log("Rope reconnected to player!");
-            
-            //PlayHapticFeedback(args.interactorObject);
+            isConnected = true;
+            if (showDebugLogs) Debug.LogWarning("[ClippingPoint] ROPE RECONNECTED");
+            SendHaptics(device, hapticIntensity * 0.7f, hapticDuration * 1.2f);
         }
     }
-    
-    void PlayHapticFeedback(IXRSelectInteractor interactor)
+
+    void SendHaptics(InputDevice device, float intensity, float duration)
     {
-        // Send haptic pulse to controller
-        if (interactor is XRBaseInputInteractor controllerInteractor)
+        if (!enableHaptics || !device.isValid) return;
+        if (device.TryGetHapticCapabilities(out var caps) && caps.supportsImpulse)
         {
-            controllerInteractor.SendHapticImpulse(0.5f, 0.2f);
+            device.SendHapticImpulse(0, intensity, duration);
         }
     }
-    
-    void OnDestroy()
+
+    void OnDrawGizmos()
     {
-        if (interactable != null)
-        {
-            interactable.selectEntered.RemoveListener(OnInteracted);
-        }
+        Gizmos.color = isConnected ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(transform.position, 0.1f);
     }
 }
