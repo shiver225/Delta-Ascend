@@ -7,11 +7,12 @@ TagManager:
   - Anchor
   - climb
   - playerHand
+  - SpawnedCarabiner
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PlayerInteractable
   - Water
   - UI
   - 
