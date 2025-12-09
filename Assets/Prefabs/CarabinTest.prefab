@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &615626341225322366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6213899811780056050}
+  m_Layer: 0
+  m_Name: RopePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6213899811780056050
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615626341225322366}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.238, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1554044219060818692}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &898064655171428287
 GameObject:
   m_ObjectHideFlags: 0
@@ -35,6 +66,7 @@ Transform:
   - {fileID: 5117564053329100851}
   - {fileID: 6573203658077317476}
   - {fileID: 360614645634298263}
+  - {fileID: 6213899811780056050}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1855693426862333817
@@ -457,7 +489,7 @@ Transform:
   m_GameObject: {fileID: 9136392201671885563}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: -0.10875975, y: 0.7837994, z: -13.746414}
+  m_LocalPosition: {x: 0, y: -0.68, z: 0}
   m_LocalScale: {x: 0.028571429, y: 1.8571429, z: 1.1428572}
   m_ConstrainProportionsScale: 0
   m_Children: []
