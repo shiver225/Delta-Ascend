@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 public class timer : MonoBehaviour
@@ -36,6 +36,12 @@ public class timer : MonoBehaviour
         }
 
         UpdateTimerText();
+    }
+
+    public void StopTimer()
+    {
+        isRunning = false;
+        Debug.Log("⏱️ Timer stopped!");
     }
 
     void UpdateTimerText()
