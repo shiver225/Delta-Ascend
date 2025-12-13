@@ -5,6 +5,7 @@ public class WinCondition : MonoBehaviour
 {
     public timer timerScript;
     public GameObject fireworksPrefab;
+    public GameObject winStand;
     public float fireworkInterval = 0.7f;
     public float fireworkDuration = 10f;
     public float radius = 3f;
@@ -17,6 +18,7 @@ public class WinCondition : MonoBehaviour
         {
             timerScript.StopTimer();
             fireworkLoop = true;
+            winStand.SetActive(true);
             StartCoroutine(RandomFireworkShow());
             StartCoroutine(StopFireworksAfterDelay());
         }
@@ -27,13 +29,15 @@ public class WinCondition : MonoBehaviour
         {
             Vector3 randomPos = transform.position +
                                 new Vector3(
-                                    Random.Range(-radius, radius),
-                                    Random.Range(2f, radius + 3f),
-                                    Random.Range(-radius, radius)
+                                    Random.Range(-radius + 15f, radius + 15f),
+                                    Random.Range(10f, radius + 15f),
+                                    Random.Range(-radius + 15f, radius + 15f)
                                 );
 
             GameObject fw = Instantiate(fireworksPrefab, randomPos, Quaternion.identity);
             SetRandomFireworkColor(fw);
+
+            StartCoroutine(PlaySoundWithDelay(fw, 0.5f));
 
             yield return new WaitForSeconds(fireworkInterval);
         }
@@ -60,6 +64,14 @@ public class WinCondition : MonoBehaviour
         float v = Random.Range(0.8f, 1f);    // Brightness
 
         return Color.HSVToRGB(h, s, v);
+    }
+    IEnumerator PlaySoundWithDelay(GameObject fw, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        AudioSource audio = fw.GetComponent<AudioSource>();
+        if (audio != null)
+            audio.Play();
     }
 
 
