@@ -18155,6 +18155,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Note
       objectReference: {fileID: 0}
+    - target: {fileID: 1741432311366887391, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1852639759}
     - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -218.0005
@@ -27175,6 +27179,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 570818}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1795829195
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 203127451176368875, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_Name
+      value: Note (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -217.2583
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 31.981
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -59.64383
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6219146057088222778, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e326a8df8018c7c478526bf7d59055b9, type: 3}
 --- !u!1 &1797279514
 GameObject:
   m_ObjectHideFlags: 0
@@ -28353,6 +28414,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844251602}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1852639759 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1381003933199010277, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
+  m_PrefabInstance: {fileID: 3553664170849322038}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1857726357
 GameObject:
   m_ObjectHideFlags: 0
@@ -32708,6 +32774,10 @@ PrefabInstance:
       propertyPath: ropeManager
       value: 
       objectReference: {fileID: 408490808}
+    - target: {fileID: 1238248784929802259, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
+      propertyPath: maxReconnectDistance
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1381003933199010277, guid: 394cbd065c0e8524682bc54aa895af9d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -217.72745
@@ -32965,8 +33035,10 @@ MonoBehaviour:
   ropeManager: {fileID: 408490808}
   playerClippingPoint: {fileID: 1786918090}
   characterController: {fileID: 3553664170849322053}
-  maxRopeLength: 10
   ropeSegmentLength: 3
+  slackDistance: 0.3
+  maxAdjustPerFrame: 0.35
+  useHardClamp: 1
   enableConstraint: 1
   showDebugLogs: 0
   enableHapticFeedback: 1
@@ -34094,3 +34166,4 @@ SceneRoots:
   - {fileID: 905343897}
   - {fileID: 1236223244}
   - {fileID: 1840319659}
+  - {fileID: 1795829195}
