@@ -58,7 +58,7 @@ public class RopeManager : MonoBehaviour
 
     public bool WithinActiveChainRange(float maxDistance)
     {
-        if (!HasActiveCarabiners()) return true; // nothing to measure
+        if (!HasActiveCarabiners()) return true;
         Transform newest = ActiveChain.carabiners[ActiveChain.carabiners.Count - 1];
         float dist = Vector3.Distance(playerClippingPoint.position, newest.position);
         return dist <= maxDistance;
@@ -79,7 +79,9 @@ public class RopeManager : MonoBehaviour
 
     public void OnCarabinerPlaced(Transform carabinerTransform)
     {
-        // If we are disconnected and already have a chain, start a new chain before adding
+        bool wasDisconnected = ropeDisconnectedFromPlayer;
+        
+        // If disconnected and already have a chain, finalize old chain and start new
         if (ropeDisconnectedFromPlayer && ActiveChain.carabiners.Count > 0 && !ActiveChain.finalized)
         {
             FinalizeActiveChain();
@@ -95,6 +97,21 @@ public class RopeManager : MonoBehaviour
 
         ActiveChain.carabiners.Add(ropePoint);
         Debug.Log($"[RopeManager] Found RopePoint on {carabinerTransform.name}");
+        
+        // AUTO-RECONNECT: If this is the first carabiner of a new chain and we were disconnected, reconnect
+        if (wasDisconnected && ActiveChain.carabiners.Count == 1)
+        {
+            ropeDisconnectedFromPlayer = false;
+            Debug.Log("[RopeManager] Auto-reconnected to new chain!");
+            
+            // Notify PlayerClippingPoint to update its state
+            var clippingPoint = playerClippingPoint.GetComponent<PlayerClippingPoint>();
+            if (clippingPoint != null)
+            {
+                clippingPoint.ForceReconnect();
+            }
+        }
+        
         UpdateRopeConnections();
     }
 
@@ -132,7 +149,6 @@ public class RopeManager : MonoBehaviour
     {
         var chain = ActiveChain;
 
-        // Clear and rebuild only for active chain
         ClearRopeSegments(chain);
 
         if (chain.finalized || chain.carabiners.Count == 0)
@@ -140,7 +156,7 @@ public class RopeManager : MonoBehaviour
             return;
         }
 
-        // If disconnected from player: draw only between carabiners (keep chain visible)
+        // If disconnected: draw only between carabiners (keep chain visible)
         if (ropeDisconnectedFromPlayer)
         {
             for (int i = chain.carabiners.Count - 1; i > 0; i--)
@@ -181,7 +197,6 @@ public class RopeManager : MonoBehaviour
 
         Rope rope = ropeObj.AddComponent<Rope>();
 
-        // Set private fields immediately via reflection
         var ropeType = typeof(Rope);
         var startField = ropeType.GetField("startPoint", BindingFlags.NonPublic | BindingFlags.Instance);
         var endField = ropeType.GetField("endPoint", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -210,9 +225,15 @@ public class RopeManager : MonoBehaviour
         if (chain.finalized || chain.carabiners.Count == 0) return null;
         var pts = new List<Transform>();
         pts.Add(playerClippingPoint);
-        // Order: player -> newest -> ... -> oldest
         for (int i = chain.carabiners.Count - 1; i >= 0; i--)
             pts.Add(chain.carabiners[i]);
         return pts;
+    }
+    
+    public Transform GetNewestCarabiner()
+    {
+        var chain = ActiveChain;
+        if (chain.carabiners.Count == 0) return null;
+        return chain.carabiners[chain.carabiners.Count - 1];
     }
 }
