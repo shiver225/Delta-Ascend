@@ -9,8 +9,8 @@ public class PlayerClippingPoint : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private bool allowReconnection = true;
     [SerializeField] private bool startConnected = true;
-    [SerializeField] private float buttonCooldown = 0.35f;   // debounce for X button
-    [SerializeField] private float maxReconnectDistance = 10f; // match rope length
+    [SerializeField] private float buttonCooldown = 0.35f;
+    [SerializeField] private float maxReconnectDistance = 10f;
 
     [Header("Haptics")]
     [SerializeField] private bool enableHaptics = true;
@@ -22,6 +22,7 @@ public class PlayerClippingPoint : MonoBehaviour
 
     private bool isConnected = true;
     private float lastPressTime = 0f;
+    private bool wasPressed = false;
 
     void Start()
     {
@@ -43,17 +44,37 @@ public class PlayerClippingPoint : MonoBehaviour
     void Update()
     {
         var leftHand = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+        
+        if (showDebugLogs && !leftHand.isValid)
+        {
+            // Only log once per second to avoid spam
+            if (Time.frameCount % 60 == 0)
+                Debug.LogWarning("[ClippingPoint] Left hand device not valid!");
+        }
+        
         if (!leftHand.isValid) return;
 
-        // X button on left controller is CommonUsages.primaryButton
-        if (leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool pressed) && pressed)
+        // X button = primaryButton on left controller
+        bool isPressed = false;
+        if (leftHand.TryGetFeatureValue(CommonUsages.primaryButton, out bool buttonValue))
+        {
+            isPressed = buttonValue;
+        }
+
+        // Detect button press (edge detection: was not pressed, now is pressed)
+        if (isPressed && !wasPressed)
         {
             if (Time.time - lastPressTime > buttonCooldown)
             {
+                if (showDebugLogs)
+                    Debug.Log("[ClippingPoint] X button pressed!");
+                    
                 HandleToggle(leftHand);
                 lastPressTime = Time.time;
             }
         }
+
+        wasPressed = isPressed;
     }
 
     void HandleToggle(InputDevice device)
@@ -69,7 +90,7 @@ public class PlayerClippingPoint : MonoBehaviour
 
         if (isConnected)
         {
-            // Disconnect (but keep current chain intact)
+            // Disconnect
             ropeManager.DisconnectRopeFromPlayer();
             isConnected = false;
             if (showDebugLogs) Debug.LogWarning("[ClippingPoint] ROPE DISCONNECTED");
@@ -77,14 +98,14 @@ public class PlayerClippingPoint : MonoBehaviour
         }
         else if (allowReconnection)
         {
-            // If there is an active chain and we’re too far, block reconnect
+            // Check range before reconnecting
             if (ropeManager.HasActiveCarabiners() && !ropeManager.WithinActiveChainRange(maxReconnectDistance))
             {
-                if (showDebugLogs) Debug.LogWarning("[ClippingPoint] Too far to reconnect. Move closer (< rope length).");
+                if (showDebugLogs) Debug.LogWarning("[ClippingPoint] Too far to reconnect.");
                 return;
             }
 
-            // Reconnect to the current active chain
+            // Reconnect
             ropeManager.ReconnectRopeToPlayer();
             isConnected = true;
             if (showDebugLogs) Debug.LogWarning("[ClippingPoint] ROPE RECONNECTED");
@@ -105,5 +126,11 @@ public class PlayerClippingPoint : MonoBehaviour
     {
         Gizmos.color = isConnected ? Color.green : Color.red;
         Gizmos.DrawWireSphere(transform.position, 0.1f);
+    }
+
+    public void ForceReconnect()
+    {
+        isConnected = true;
+        if (showDebugLogs) Debug.LogWarning("[ClippingPoint] Force reconnected by RopeManager!");
     }
 }
